@@ -6,6 +6,8 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import { ChemicalElementsUtils } from "../../utils/chemicalElements.utils";
 import { StringToNumberModel } from "../../interfaces/stringToNumber.interfaces";
 import { StringToNumberUtils } from "../../utils/stringToNumber.utils";
+import {ImportFavoriteModal} from './ImportFavoritesModal';
+import {ExportFavoriteModal} from './ExportFavoritesModal';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 interface FavoriteProps extends PropsFromRedux {
@@ -15,6 +17,8 @@ interface FavoriteProps extends PropsFromRedux {
 class FavoriteSectionBase extends PureComponent<FavoriteProps> {
     public render() {
         return <> 
+        <ImportFavoriteModal />
+        <ExportFavoriteModal />
         <TableContainer component={Paper}>
         <Table size="small">
             <TableHead>

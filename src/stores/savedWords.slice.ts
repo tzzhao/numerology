@@ -13,6 +13,7 @@ const initialState: SavedWordsState = JSON.parse(localStorage.getItem(LOCAL_STOR
 
 type SaveWordPayload = string;
 type RemoveWordPayload = string;
+type ImportFavoritesPayload = string;
 
 export const savedWordsSlice = createSlice({
   name: 'savedWords',
@@ -40,6 +41,27 @@ export const savedWordsSlice = createSlice({
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
         }
       },
+      importFavorites: (state, action: PayloadAction<ImportFavoritesPayload>) => {
+        const favorites = action.payload.split(',');
+        const favoriteSet = new Set();
+        Object.keys(state.dictionary).forEach((key: any) => {
+            const wordArray = state.dictionary[key];
+            wordArray.forEach((favorite: string) => {
+                favoriteSet.add(favorite);
+            });
+        })
+        favorites.forEach((fav) => {
+            const favorite = fav.trim();
+            if (!favoriteSet.has(favorite) && favorite.length > 0) {
+                favoriteSet.add(favorite);
+                const models = StringToNumberUtils.getModels(favorite);
+                let wordArray: string[] = state.dictionary[models.total] || [];
+                wordArray = [...wordArray, favorite];
+                state.dictionary = {...state.dictionary, [models.total]: wordArray};
+            }
+        });
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
+      }, 
   },
 })
 
